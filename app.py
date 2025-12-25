@@ -8,15 +8,22 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import os
 
+# Set NLTK data path for Streamlit Cloud
+nltk_data_dir = os.path.join(os.path.expanduser('~'), 'nltk_data')
+if nltk_data_dir not in nltk.data.path:
+    nltk.data.path.append(nltk_data_dir)
+
 # Download required NLTK data
 @st.cache_resource
 def download_nltk_data():
     """Download required NLTK data once"""
     try:
-        nltk.download('punkt', quiet=True)
-        nltk.download('stopwords', quiet=True)
-        nltk.download('wordnet', quiet=True)
-        nltk.download('omw-1.4', quiet=True)
+        # Download both punkt and punkt_tab for compatibility with different NLTK versions
+        nltk.download('punkt', quiet=True, download_dir=nltk_data_dir)
+        nltk.download('punkt_tab', quiet=True, download_dir=nltk_data_dir)
+        nltk.download('stopwords', quiet=True, download_dir=nltk_data_dir)
+        nltk.download('wordnet', quiet=True, download_dir=nltk_data_dir)
+        nltk.download('omw-1.4', quiet=True, download_dir=nltk_data_dir)
         return True
     except Exception as e:
         # Don't use st.error in cached function - return error instead
