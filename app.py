@@ -388,8 +388,8 @@ def main():
     st.markdown("---")
     st.markdown("""
         <div style='text-align: center; color: gray; padding: 2rem 0;'>
-            <p><strong>Fake Review Detection System</strong> | NLP Project 2025</p>
-            <p>Built with Streamlit • scikit-learn • NLTK • TF-IDF</p>
+            <p style='margin-bottom: 0.25rem;'><strong>Fake Review Detection System</strong> | NLP Project 2025</p>
+            <p style='margin-top: 0;'>Built with Streamlit • scikit-learn • NLTK • TF-IDF</p>
         </div>
     """, unsafe_allow_html=True)
 
