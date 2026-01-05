@@ -65,7 +65,21 @@ def init_preprocessing():
     """Initialize preprocessing tools"""
     lemmatizer = WordNetLemmatizer()
     stop_words = set(stopwords.words('english'))
-    stopwords_to_keep = {'not', 'no', 'nor', 'very', 'too', 'so', 'more', 'most'}
+
+    stopwords_to_keep = {
+        # Negations - Essential for sentiment reversal patterns
+        'not', 'no', 'nor', 'never', 'nothing', 'nobody', 'nowhere',
+
+        # Intensifiers - Fake reviews use more exaggerated language
+        'very', 'too', 'really', 'actually', 'definitely', 'absolutely', 'totally',
+
+        # Modal verbs - Distinguish hypotheticals from actual experiences
+        'would', 'could', 'should', 'might', 'must',
+
+        # Temporal absolutes - Extreme statements common in deceptive text
+        'always'
+    }
+
     stop_words = stop_words - stopwords_to_keep
     return lemmatizer, stop_words
 
@@ -197,7 +211,7 @@ def main():
     # Header
     st.title("🔍 Fake Review Detection System")
     st.markdown("### Detect computer-generated fake reviews using Machine Learning")
-    st.markdown("**Test Accuracy: 90.11%** | **ROC-AUC: 96.60%** | Model: Logistic Regression (C=10.0, L2 penalty)")
+    st.markdown("**Test Accuracy: 90.73%** | **ROC-AUC: 96.97%** | Model: Logistic Regression (C=10.0, L2 penalty)")
     st.markdown("---")
     
     # Sidebar - Model Information
@@ -226,17 +240,19 @@ def main():
             st.markdown("**Model:** Logistic Regression")
             st.markdown("**Hyperparameters:** C=10.0, L2 penalty")
             st.markdown("### Test Set Metrics")
-            st.metric("Accuracy", "90.11%")
-            st.metric("Precision", "90.00%")
-            st.metric("Recall", "90.24%")
-            st.metric("F1-Score", "90.12%")
-            st.metric("ROC-AUC", "96.60%")
+            st.metric("Accuracy", "90.73%")
+            st.metric("Precision", "90.35%")
+            st.metric("Recall", "91.19%")
+            st.metric("F1-Score", "90.77%")
+            st.metric("ROC-AUC", "96.97%")
         
         st.markdown("---")
         st.markdown("### Dataset Info")
         st.markdown("""
-        - **Size:** 40,432 reviews
-        - **Balance:** 50/50 (CG/OR)
+        - **Original:** 40,432 reviews
+        - **Cleaned:** 40,412 reviews
+        - **Duplicates Removed:** 20
+        - **Balance:** 50/50 (Fake/Genuine)
         - **Categories:** 10 products
         - **Split:** 70/15/15 (train/val/test)
         """)
